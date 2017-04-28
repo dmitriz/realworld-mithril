@@ -1,8 +1,8 @@
-// TODO add switching between 'logged in' & 'logged out' navigation items. Abstract out into separate MainNav component?
-
 var m = require('mithril');
 
 
+var domain = require('./../domain');
+var MainNav = require('./MainNav');
 var Link = require('./Link');
 
 
@@ -11,11 +11,7 @@ function view() {
 		m('nav.navbar.navbar-light',
 			m('.container',
 				m(Link, { className: 'navbar-brand', to: '/' }, 'conduit'),
-				m('ul.nav.navbar-nav.pull-xs-right', [
-					m('li.nav-item', m(Link, { className: 'nav-link', to: '/' }, 'Home')),
-					m('li.nav-item', m(Link, { className: 'nav-link', to: '/login' }, 'Sign in')),
-					m('li.nav-item', m(Link, { className: 'nav-link', to: '/register' }, 'Sign up'))
-				])
+				m(MainNav, { className: 'nav navbar-nav pull-xs-right', currentUser: domain.store.user})
 			)
 		)
 	);

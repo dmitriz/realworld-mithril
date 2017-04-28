@@ -9,6 +9,7 @@ var ScreenArticle = require('./components/ScreenArticle');
 var ScreenUserLogin = require('./components/ScreenUserLogin');
 var ScreenUserRegister = require('./components/ScreenUserRegister');
 var ScreenUserProfile = require('./components/ScreenUserProfile');
+var ScreenUserSettings = require('./components/ScreenUserSettings');
 var ScreenUserFavorites = require('./components/ScreenUserFavorites');
 var ScreenEditor = require('./components/ScreenEditor');
 
@@ -24,14 +25,14 @@ var routes = {
 			return m(LayoutDefault, m(ScreenArticle));
 		}
 	},
-	'/login': {
-		view: function () {
-			return m(LayoutDefault, m(ScreenUserLogin));
-		}
-	},
 	'/register': {
 		view: function () {
 			return m(LayoutDefault, m(ScreenUserRegister));
+		}
+	},
+	'/login': {
+		view: function () {
+			return m(LayoutDefault, m(ScreenUserLogin));
 		}
 	},
 	'/@:username': {
@@ -42,6 +43,11 @@ var routes = {
 	'/@:username/favorites': {
 		view: function () {
 			return m(LayoutDefault, m(ScreenUserFavorites));
+		}
+	},
+	'/settings': {
+		view: function () {
+			return m(LayoutDefault, m(ScreenUserSettings));
 		}
 	},
 	'/editor': {

@@ -3,12 +3,14 @@ var m = require('mithril');
 
 function onGlobalFeedClick(e) {
 	e.preventDefault();
+	// TODO add implementation
 	alert('onGlobalFeedClick()');
 }
 
 
 function onYourFeedClick(e) {
 	e.preventDefault();
+	// TODO add implementation
 	alert('onYourFeedClick()');
 }
 

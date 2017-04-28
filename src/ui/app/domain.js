@@ -43,8 +43,6 @@ var actions = {
 					state.userLoginErrors = null;
 					state.user = response.data;
 
-					actions.getLoggedInUser();
-
 					return response.data;
 				}
 

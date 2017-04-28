@@ -1,11 +1,8 @@
 var m = require('mithril');
 
 
-var name = 'AppHeader';
-
-
 function view() {
-	return m('header', { className: name },
+	return m('header',
 		m('nav.navbar.navbar-light',
 			m('.container',
 				m('a.navbar-brand', { href: '#!/' }, 'conduit')

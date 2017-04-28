@@ -3,6 +3,7 @@ var apiAdapter = require('./api-adapter');
 
 var state = {
 	articles: null,
+	isUserLoginBusy: false,
 	userLoginErrors: null
 };
 
@@ -29,9 +30,12 @@ var actions = {
 
 
 	attemptUserLogin: function (email, password) {
+		state.isUserLoginBusy = true;
+
 		return apiAdapter.userLogin(email, password)
 			.then(function (response) {
 				console.log(response.type, response.data);
+				state.isUserLoginBusy = false;
 
 				if (response.type === apiAdapter.responseTypes.GENERIC_SUCCESS) {
 					state.userLoginErrors = null;

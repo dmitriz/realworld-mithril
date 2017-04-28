@@ -15,7 +15,7 @@ function view() {
 						m('h1.text-xs-center', 'Sign In'),
 						m('p.text-xs-center', m('a', { href: '#!/register' }, 'Need an account?')),
 						m(ListErrors, {errors: domain.store.userLoginErrors}),
-						m(UserLoginForm)
+						m(UserLoginForm, {isUserLoginBusy: domain.store.isUserLoginBusy})
 					])
 				])
 			])

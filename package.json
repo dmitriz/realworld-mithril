@@ -1,5 +1,5 @@
 {
-  "name": "mithril-realworld-example-app",
+  "name": "realworld-starter-kit",
   "version": "0.1.0",
   "private": true,
   "description": "Exemplary real world application built with Mithril [TODO add production url]",
@@ -11,14 +11,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/barryels/mithril-realworld-example-app.git"
+    "url": "git+https://github.com/barryels/realworld-starter-kit.git"
   },
   "author": "Barry Els <barryels@gmail.com> (http://barryels.com/)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/barryels/mithril-realworld-example-app/issues"
+    "url": "https://github.com/barryels/realworld-starter-kit/issues"
   },
-  "homepage": "https://github.com/barryels/mithril-realworld-example-app#readme",
+  "homepage": "https://github.com/barryels/realworld-starter-kit#readme",
   "dependencies": {
     "mithril": "^1.1.1"
   },

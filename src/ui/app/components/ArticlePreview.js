@@ -1,6 +1,9 @@
 var m = require('mithril');
 
 
+var Link = require('./Link');
+
+
 var FAVORITED_CLASS = 'btn btn-sm btn-primary';
 var NOT_FAVORITED_CLASS = 'btn btn-sm btn-outline-primary';
 
@@ -18,12 +21,12 @@ function view(vnode) {
 
 	return m('div.article-preview', [
 		m('.article-meta', [
-			m('a', { href: '#!/@' + article.author.username },
+			m(Link, { to: '/@' + article.author.username },
 				m('img', { src: article.author.image })
 			),
 
 			m('.info', [
-				m('a.author', { href: '#!/@' + article.author.username }, article.author.username),
+				m(Link, { to: '/@' + article.author.username, className: 'author' }, article.author.username),
 				m('.date', new Date(article.createdAt).toDateString())
 			]),
 
@@ -36,7 +39,7 @@ function view(vnode) {
 
 		]),
 
-		m('a.preview-link', { href: '#!/article/' + article.slug }, [
+		m(Link, {to: '/article/' + article.slug, className: 'preview-link'}, [
 			m('h1', article.title),
 			m('p', article.description),
 			m('span', 'Read more...'),

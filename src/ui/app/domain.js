@@ -37,13 +37,14 @@ var actions = {
 
 		return apiAdapter.userLogin(email, password)
 			.then(function (response) {
-				console.log(response.type, response.data);
 				state.isUserLoginBusy = false;
 
 				if (response.type === apiAdapter.responseTypes.GENERIC_SUCCESS) {
 					state.userLoginErrors = null;
 					state.user = response.data;
-					console.log(state.user);
+
+					actions.getLoggedInUser();
+
 					return response.data;
 				}
 
@@ -53,6 +54,25 @@ var actions = {
 				}
 
 			});
+	},
+
+
+	getLoggedInUser: function () {
+		return apiAdapter.getLoggedInUser()
+			.then(function (response) {
+				console.log('domain.getLoggedInUser()', response.type, response.data);
+			});
+	},
+
+
+	logUserOut: function () {
+		state.user = null;
+		state.isUserLoginBusy = false;
+		state.userLoginErrors = null;
+
+		apiAdapter.clearUserAuthToken();
+
+		return Promise();
 	}
 
 };

@@ -16,17 +16,19 @@ var actions = {
 	getArticles: function () {
 		return APIGateway.getArticles()
 			.then(function (response) {
-				state.articles = response;
-				return response;
+				console.info('domain', response);
+				// state.articles = []; // Testing empty response
+				state.articles = response.articles;
+				return response.articles;
 			});
 	},
 
 
-	getArticlesForUser: function () {
+	getArticlesForUser: function (username) {
 		getArticles()
-		.then(function () {
-
-		});
+			.then(function (response) {
+				// [TODO filter articles by username]
+			});
 	}
 
 };

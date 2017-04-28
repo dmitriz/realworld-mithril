@@ -16,7 +16,6 @@ var actions = {
 	getArticles: function () {
 		return apiAdapter.getArticles()
 			.then(function (response) {
-				console.info('domain', response);
 				// state.articles = []; // Testing empty response
 				state.articles = response.articles;
 				return response.articles;
@@ -25,9 +24,18 @@ var actions = {
 
 
 	getArticlesForUser: function (username) {
-		getArticles()
+		return getArticles()
 			.then(function (response) {
 				// [TODO filter articles by username]
+			});
+	},
+
+
+	attemptUserLogin: function (email, password) {
+		return apiAdapter.userLogin(email, password)
+			.then(function (response) {
+				console.log(response.type, response.data);
+				return response;
 			});
 	}
 

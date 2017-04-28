@@ -5,6 +5,7 @@ var name = 'LayoutDefault';
 
 
 var AppHeader = require('./AppHeader');
+var ScreenContent = require('./ScreenContent');
 var AppFooter = require('./AppFooter');
 
 
@@ -12,7 +13,7 @@ function view(vnode) {
 	return m('div', { className: name },
 		[
 			m(AppHeader),
-			m('.container.page', vnode.children),
+			m(ScreenContent, {}, vnode.children),
 			m(AppFooter)
 		]
 	);

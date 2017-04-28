@@ -5,10 +5,8 @@ var name = 'AppFooter';
 
 
 function view() {
-	return m('div', {className: name},
-		m('footer',
-			m('.container', 'AppFooter')
-		)
+	return m('footer', { className: name },
+		m('.container', 'AppFooter')
 	);
 };
 

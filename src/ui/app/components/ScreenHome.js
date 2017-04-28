@@ -1,11 +1,15 @@
 var m = require('mithril');
 
 
-var name = 'ScreenHome';
+var Banner = require('./Banner');
 
 
 function view() {
-	return m('div', {className: name}, 'ScreenHome!');
+	return m('div.home-page',
+		[
+			m(Banner)
+		]
+	);
 };
 
 

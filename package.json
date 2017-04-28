@@ -23,7 +23,7 @@
     "mithril": "^1.1.1"
   },
   "scripts": {
-    "ui-server": "./node_modules/.bin/http-server public -p 3000",
+    "ui-server": "./node_modules/http-server/bin/http-server public -p 3000",
     "dev": "npm run ui-server",
     "start": "npm run dev",
     "test": "echo \"Error: no test specified\" && exit 1"

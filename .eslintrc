@@ -1,0 +1,42 @@
+{
+	"env": {
+		"browser": true
+	},
+	"rules": {
+		"quotes": [
+			2,
+			"single"
+		],
+		"eqeqeq": [
+			2,
+			"smart"
+		],
+		"indent": [
+			2,
+			"tab",
+			{
+				"SwitchCase": 1
+			}
+		],
+		"semi": [
+			2,
+			"always"
+		],
+		"max-params": [
+			2,
+			4
+		],
+		"max-depth": [
+			2,
+			2
+		],
+		"max-statements": [
+			2,
+			15
+		],
+		"complexity": [
+			2,
+			5
+		]
+	}
+}

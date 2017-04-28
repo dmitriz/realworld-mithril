@@ -31,6 +31,7 @@ var actions = {
 
 	attemptUserLogin: function (email, password) {
 		state.isUserLoginBusy = true;
+		state.userLoginErrors = null;
 
 		return apiAdapter.userLogin(email, password)
 			.then(function (response) {

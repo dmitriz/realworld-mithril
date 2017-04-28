@@ -3,7 +3,7 @@ var m = require('mithril');
 
 var responseTypes = {
 	GENERIC_SUCCESS: 'GENERIC_SUCCESS',
-	LOGIN_ERROR_INCORRECT_DETAILS: 'LOGIN_ERROR_INCORRECT_DETAILS'
+	LOGIN_ERROR: 'LOGIN_ERROR'
 };
 
 
@@ -16,7 +16,13 @@ function getArticles() {
 	return m.request({
 		method: 'GET',
 		url: '//conduit.productionready.io/api/articles'
-	});
+	})
+		.then(function (response) {
+			return {
+				type: responseTypes.GENERIC_SUCCESS,
+				data: response
+			};
+		});
 }
 
 
@@ -39,7 +45,7 @@ function userLogin(email, password) {
 		})
 		.catch(function (e) {
 			return {
-				type: responseTypes.LOGIN_ERROR_INCORRECT_DETAILS,
+				type: responseTypes.LOGIN_ERROR,
 				data: getErrorMessageFromErrorObject(e)
 			};
 		});

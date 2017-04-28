@@ -2,7 +2,8 @@ var apiAdapter = require('./api-adapter');
 
 
 var state = {
-	articles: null
+	articles: null,
+	userLoginErrors: null
 };
 
 
@@ -16,17 +17,13 @@ var actions = {
 	getArticles: function () {
 		return apiAdapter.getArticles()
 			.then(function (response) {
-				// state.articles = []; // Testing empty response
-				state.articles = response.articles;
+				if (response.type === apiAdapter.responseTypes.GENERIC_SUCCESS) {
+					state.articles = response.data.articles;
+				}
+
+				// state.articles = []; // Test empty response
+
 				return response.articles;
-			});
-	},
-
-
-	getArticlesForUser: function (username) {
-		return getArticles()
-			.then(function (response) {
-				// [TODO filter articles by username]
 			});
 	},
 
@@ -35,7 +32,17 @@ var actions = {
 		return apiAdapter.userLogin(email, password)
 			.then(function (response) {
 				console.log(response.type, response.data);
-				return response;
+
+				if (response.type === apiAdapter.responseTypes.GENERIC_SUCCESS) {
+					state.userLoginErrors = null;
+					return response.data;
+				}
+
+				if (response.type === apiAdapter.responseTypes.LOGIN_ERROR) {
+					state.userLoginErrors = response.data;
+					return response.data;
+				}
+
 			});
 	}
 

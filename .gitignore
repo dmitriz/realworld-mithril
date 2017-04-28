@@ -17,4 +17,4 @@ Thumbs.db
 npm-debug*.log
 
 # Outputs
-/public
+/public/main.js

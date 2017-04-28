@@ -10,6 +10,7 @@ var NOT_FAVORITED_CLASS = 'btn btn-sm btn-outline-primary';
 
 function onFavoriteButtonClick(e) {
 	e.preventDefault();
+	// TODO add implementation
 }
 
 
@@ -39,7 +40,7 @@ function view(vnode) {
 
 		]),
 
-		m(Link, {to: '/article/' + article.slug, className: 'preview-link'}, [
+		m(Link, { to: '/article/' + article.slug, className: 'preview-link' }, [
 			m('h1', article.title),
 			m('p', article.description),
 			m('span', 'Read more...'),

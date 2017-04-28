@@ -7,6 +7,13 @@ var UserLoginForm = require('./UserLoginForm');
 var ListErrors = require('./ListErrors');
 
 
+function onupdate() {
+	if (domain.store.user) {
+		m.route.set('/');
+	}
+}
+
+
 function view() {
 	return m('div',
 		[
@@ -28,5 +35,6 @@ function view() {
 
 
 module.exports = {
+	onupdate: onupdate,
 	view: view
 };

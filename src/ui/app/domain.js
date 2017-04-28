@@ -4,7 +4,8 @@ var apiAdapter = require('./api-adapter');
 var state = {
 	articles: null,
 	isUserLoginBusy: false,
-	userLoginErrors: null
+	userLoginErrors: null,
+	user: null
 };
 
 
@@ -24,12 +25,13 @@ var actions = {
 
 				// state.articles = []; // Test empty response
 
-				return response.articles;
+				return state.articles;
 			});
 	},
 
 
 	attemptUserLogin: function (email, password) {
+		state.user = null;
 		state.isUserLoginBusy = true;
 		state.userLoginErrors = null;
 
@@ -40,6 +42,8 @@ var actions = {
 
 				if (response.type === apiAdapter.responseTypes.GENERIC_SUCCESS) {
 					state.userLoginErrors = null;
+					state.user = response.data;
+					console.log(state.user);
 					return response.data;
 				}
 

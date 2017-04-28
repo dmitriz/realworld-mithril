@@ -1,11 +1,8 @@
 var m = require('mithril');
 
 
-var name = 'AppFooter';
-
-
 function view() {
-	return m('footer', { className: name },
+	return m('footer',
 		m('.container', 'AppFooter')
 	);
 };

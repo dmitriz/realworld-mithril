@@ -30,7 +30,7 @@ function view(vnode) {
 			m('.pull-xs-right',
 				m('button', { className: favoriteButtonClass, onclick: onFavoriteButtonClick }, [
 					m('i.ion-heart'),
-					m('span', ' ' + article.favoritesCount + ' ' + article.favorited)
+					m('span', ' ' + article.favoritesCount)
 				])
 			)
 

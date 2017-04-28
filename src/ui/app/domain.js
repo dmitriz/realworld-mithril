@@ -1,4 +1,4 @@
-var APIGateway = require('./components/APIGateway');
+var apiAdapter = require('./api-adapter');
 
 
 var state = {
@@ -14,7 +14,7 @@ function getArticlesFromAPIOrCache() {
 var actions = {
 
 	getArticles: function () {
-		return APIGateway.getArticles()
+		return apiAdapter.getArticles()
 			.then(function (response) {
 				console.info('domain', response);
 				// state.articles = []; // Testing empty response

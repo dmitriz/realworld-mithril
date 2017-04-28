@@ -1,3 +1,5 @@
+// TODO add switching between 'logged in' & 'logged out' navigation items. Abstract out into separate MainNav component?
+
 var m = require('mithril');
 
 

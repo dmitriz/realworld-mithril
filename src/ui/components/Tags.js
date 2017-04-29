@@ -1,32 +1,27 @@
 var m = require('mithril');
 
 
-var types = {
-	DEFAULT: 'DEFAULT',
-	POPULAR: 'POPULAR'
-};
-
-
-function getTitleForType(type) {
-	switch (type) {
-		case types.POPULAR:
-			return 'Popular Tags';
-			break;
-		case types.DEFAULT:
-			return 'All Tags';
-			break;
-	}
-}
+var Link = require('./Link');
 
 
 function view(vnode) {
+	var tagsContent = m('div', 'Loading Tags...');
+
+	if (vnode.attrs.isLoading === false) {
+		tagsContent = m('div.tag-list',
+			vnode.attrs.list.map(function (tag) {
+				return m(Link, { className: 'tag-default tag-pill', key: tag, to: '', onclick: vnode.attrs.fn_onTagItemClick.bind(null, tag) }, tag);
+			})
+		);
+	}
+
 	return m('div', [
-		m('p', getTitleForType(vnode.attrs.type))
+		m('p', 'Popular Tags'),
+		tagsContent
 	]);
 };
 
 
 module.exports = {
-	view: view,
-	types: types
+	view: view
 };

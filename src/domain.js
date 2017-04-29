@@ -20,6 +20,7 @@ var m = require('mithril');
 
 var state = {
 	articles: null,
+	tags: {},
 	userAuthorizationToken: null,
 	isUserLoginBusy: false,
 	userLoginErrors: null,
@@ -160,6 +161,22 @@ var actions = {
 	logUserOut: function () {
 		state.user = null;
 		m.route.set('/');
+	},
+
+
+	getTags: function () {
+		state.tags.isLoading = true;
+
+		m.request({
+			method: 'GET',
+			url: '//conduit.productionready.io/api/tags',
+		})
+			.then(function (response) {
+				state.tags.list = response.tags;
+			})
+			.then(function () {
+				state.tags.isLoading = false;
+			});
 	}
 
 };

@@ -8,8 +8,15 @@ var FeedToggle = require('./FeedToggle');
 var Tags = require('./Tags');
 
 
+function onTagItemClick(tag, e) {
+	e.preventDefault();
+	console.log('ScreenHome.onTagItemClick()', tag);
+}
+
+
 function oninit() {
 	domain.actions.getArticles();
+	domain.actions.getTags();
 }
 
 
@@ -24,7 +31,7 @@ function view() {
 						m(ArticleList, { articles: domain.store.articles })
 					]),
 					m('.col-md-3', [
-						m('.sidebar', m(Tags, { type: Tags.types.POPULAR }))
+						m('.sidebar', m(Tags, { fn_onTagItemClick: onTagItemClick, isLoading: domain.store.tags.isLoading, list: domain.store.tags.list }))
 					])
 				])
 			])

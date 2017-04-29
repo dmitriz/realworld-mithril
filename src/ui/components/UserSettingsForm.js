@@ -87,7 +87,7 @@ function view(vnode) {
 			)
 		),
 		m('hr'),
-		m('button.btn.btn-outline-danger', { onclick: onLogoutButtonClick, disabled: vnode.attrs.isUserSettingsUpdateBusy }, 'Or click here to logout.')
+		m('button.btn.btn-outline-danger', { onclick: onLogoutButtonClick, disabled: vnode.attrs.isUserSettingsUpdateBusy }, 'Or click here to logout')
 	]);
 };
 

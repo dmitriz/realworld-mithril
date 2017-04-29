@@ -27,6 +27,7 @@
     "ui-build-js-watch": "watchify src/index.js --debug --verbose -o public/main.js",
     "dev": "npm run ui-build-js-watch & npm run ui-server",
     "start": "npm run dev",
+    "lint": "eslint \"src/**/*.js\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {

@@ -4,7 +4,7 @@ var m = require('mithril');
 var Link = require('./Link');
 
 
-function view(vnode) {
+function view() {
 	return m('.articles-toggle',
 		m('ul.nav.nav-pills.outline-active', [
 			m('li.nav-item',

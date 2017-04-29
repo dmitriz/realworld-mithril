@@ -1,6 +1,23 @@
 var m = require('mithril');
 
 
+// Refactor state object as the app grows
+// TODO: GET /api/profiles/:username
+// TODO: POST /api/profiles/:username/follow
+// TODO: DELETE /api/profiles/:username/follow
+// TODO: GET /api/articles/feed
+// TODO: GET /api/articles/:slug
+// TODO: POST /api/articles
+// TODO: PUT /api/articles/:slug
+// TODO: DELETE /api/articles/:slug
+// TODO: POST /api/articles/:slug/comments
+// TODO: GET /api/articles/:slug/comments
+// TODO: DELETE /api/articles/:slug/comments/:id
+// TODO: POST /api/articles/:slug/favorite
+// TODO: DELETE /api/articles/:slug/favorite
+// TODO: GET /api/tags
+
+
 var state = {
 	articles: null,
 	userAuthorizationToken: null,
@@ -32,14 +49,31 @@ function getErrorMessageFromAPIErrorObject(e) {
 }
 
 
-function getArticlesFromAPIOrCache() {
-
-}
-
-
 var actions = {
 
 	getArticles: function () {
+		/*
+		TODO
+		Filter by tag:
+
+		?tag=AngularJS
+
+		Filter by author:
+
+		?author=jake
+
+		Favorited by user:
+
+		?favorited=jake
+
+		Limit number of articles (default is 20):
+
+		?limit=20
+
+		Offset/skip number of articles (default is 0):
+
+		?offset=0
+		*/
 		m.request({
 			method: 'GET',
 			url: '//conduit.productionready.io/api/articles'

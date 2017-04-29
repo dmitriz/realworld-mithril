@@ -210,6 +210,20 @@ var actions = {
 	},
 
 
+	followUser: function (username) {
+		m.request({
+			method: 'POST',
+			url: API_BASE_URI + '/profiles/' + username + '/follow',
+			headers: {
+				'Authorization': 'Token ' + state.user.token
+			},
+		})
+			.then(function (response) {
+				// TODO
+			});
+	},
+
+
 	logUserOut: function () {
 		state.user = null;
 		window.localStorage.setItem('jwt', null);

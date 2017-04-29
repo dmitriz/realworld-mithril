@@ -4,29 +4,24 @@ var m = require('mithril');
 var Link = require('./Link');
 
 
+function onFollowUserButtonClick(e) {
+	e.preventDefault();
+}
+
+
+function onUnfollowUserButtonClick(e) {
+	e.preventDefault();
+}
+
+
 function getActionButton(data, currentUser) {
-	var actionButton = m('button.btn.btn-sm.action-btn.btn-outline-secondary', '...');
 
-	if (data.username) {
-		actionButton = m('button.btn.btn-sm.action-btn.btn-outline-secondary',
-			[
-				m('i.ion-plus-round'),
-				m('span', ' Follow ' + data.username)
-			]
-		);
-	}
-
-	if (data && (data.following === true)) {
-		actionButton = m(Link, { className: 'btn btn-sm action-btn btn-outline-secondary', to: '/settings' },
-			[
-				m('i.ion-minus-round'),
-				m('span', ' Unfollow ' + data.username)
-			]
-		);
+	if (!currentUser) {
+		return null;
 	}
 
 	if (data && currentUser && (data.username === currentUser.username)) {
-		actionButton = m(Link, { className: 'btn btn-sm action-btn btn-outline-secondary', to: '/settings' },
+		return m(Link, { className: 'btn btn-sm action-btn btn-outline-secondary', to: '/settings' },
 			[
 				m('i.ion-gear-a'),
 				m('span', ' Edit Profile Settings')
@@ -34,7 +29,25 @@ function getActionButton(data, currentUser) {
 		);
 	}
 
-	return actionButton;
+	if (data && (data.following === true)) {
+		return m(Link, { className: 'btn btn-sm action-btn btn-outline-secondary', onclick: onUnfollowUserButtonClick },
+			[
+				m('i.ion-minus-round'),
+				m('span', ' Unfollow ' + data.username)
+			]
+		);
+	}
+
+	if (data.username) {
+		return m(Link, { className: 'btn btn-sm action-btn btn-outline-secondary', onclick: onFollowUserButtonClick },
+			[
+				m('i.ion-plus-round'),
+				m('span', ' Follow ' + data.username)
+			]
+		);
+	}
+
+	return m('button.btn.btn-sm.action-btn.btn-outline-secondary', '...');
 }
 
 

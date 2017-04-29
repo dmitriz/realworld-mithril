@@ -46,6 +46,9 @@
 				"args": "after-used",
 				"ignoreRestSiblings": false
 			}
-		]
+		],
+		"no-undef": [
+			2
+		],
 	}
 }

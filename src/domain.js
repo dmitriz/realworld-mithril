@@ -218,7 +218,7 @@ var actions = {
 				'Authorization': 'Token ' + state.user.token
 			},
 		})
-			.then(function (response) {
+			.then(function () {
 				// TODO
 			});
 	},

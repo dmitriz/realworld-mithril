@@ -23,7 +23,7 @@ function view() {
 
 
 	return m('div.feed-toggle',
-		m('ul.nav.nav-pills.outline-active', links.map(function (link, i) {
+		m('ul.nav.nav-pills.outline-active', links.map(function (link) {
 			return m('li.nav-item',
 				m('a.nav-link', { href: '', onclick: link.onclick }, link.label)
 			);

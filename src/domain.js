@@ -29,11 +29,6 @@ var state = {
 };
 
 
-function init() {
-	// Do nothing for now
-}
-
-
 function getErrorMessageFromAPIErrorObject(e) {
 	var response = null;
 
@@ -171,7 +166,6 @@ var actions = {
 
 
 module.exports = {
-	init: init,
 	store: state,
 	actions: actions
 };

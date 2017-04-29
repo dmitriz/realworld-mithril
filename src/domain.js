@@ -1,8 +1,9 @@
-var apiAdapter = require('./api-adapter');
+var m = require('mithril');
 
 
 var state = {
 	articles: null,
+	userAuthorizationToken: null,
 	isUserLoginBusy: false,
 	userLoginErrors: null,
 	isUserSettingsUpdateBusy: false,
@@ -11,8 +12,23 @@ var state = {
 };
 
 
-function init(){
+function init() {
 	// Do nothing for now
+}
+
+
+function getErrorMessageFromAPIErrorObject(e) {
+	var response = null;
+
+	try {
+		response = JSON.parse(e.message).errors;
+	} catch (error) {
+		response = {
+			'An unhandled error occurred': []
+		};
+	}
+
+	return response;
 }
 
 
@@ -24,15 +40,13 @@ function getArticlesFromAPIOrCache() {
 var actions = {
 
 	getArticles: function () {
-		return apiAdapter.operations.getArticles()
+		m.request({
+			method: 'GET',
+			url: '//conduit.productionready.io/api/articles'
+		})
 			.then(function (response) {
-				if (response.type === apiAdapter.responseTypes.GENERIC_SUCCESS) {
-					state.articles = response.data.articles;
-				}
-
+				state.articles = response.articles;
 				// state.articles = []; // Test empty response
-
-				return state.articles;
 			});
 	},
 
@@ -42,31 +56,44 @@ var actions = {
 		state.isUserLoginBusy = true;
 		state.userLoginErrors = null;
 
-		return apiAdapter.operations.userLogin(email, password)
+		m.request({
+			method: 'POST',
+			url: '//conduit.productionready.io/api/users/login',
+			data: {
+				user: {
+					email: email,
+					password: password
+				}
+			}
+		})
 			.then(function (response) {
+				state.userLoginErrors = null;
+				state.user = response.user;
+			})
+			.catch(function (e) {
+				state.userLoginErrors = getErrorMessageFromAPIErrorObject(e);
+			})
+			.then(function () {
 				state.isUserLoginBusy = false;
-
-				if (response.type === apiAdapter.responseTypes.GENERIC_SUCCESS) {
-					state.userLoginErrors = null;
-					state.user = response.data;
-
-					return response.data;
-				}
-
-				if (response.type === apiAdapter.responseTypes.INPUT_VALIDATION_ERROR) {
-					state.userLoginErrors = response.data;
-
-					return response.data;
-				}
-
 			});
 	},
 
 
 	getLoggedInUser: function () {
-		return apiAdapter.operations.getLoggedInUser()
+		var userToken = state.user ? state.user.token : '';
+
+		m.request({
+			method: 'GET',
+			url: '//conduit.productionready.io/api/user',
+			headers: {
+				'Authorization': 'Token ' + userToken
+			}
+		})
 			.then(function (response) {
-				console.log('domain.getLoggedInUser()', response.type, response.data);
+				state.user = response.user;
+			})
+			.catch(function (e) {
+				console.warn('domain.getLoggedInUser()', e, getErrorMessageFromAPIErrorObject(e));
 			});
 	},
 
@@ -79,35 +106,30 @@ var actions = {
 			delete payload.password;
 		}
 
-		return apiAdapter.operations.updateUserSettings(payload)
+		m.request({
+			method: 'PUT',
+			url: '//conduit.productionready.io/api/user',
+			headers: {
+				'Authorization': 'Token ' + state.user.token
+			},
+			data: {
+				user: payload
+			}
+		})
 			.then(function (response) {
-				console.log('domain.updateUserSettings()', response.type, response.data);
-
+				state.user = response.user;
+			})
+			.catch(function (e) {
+				state.userUpdateSettingsErrors = getErrorMessageFromAPIErrorObject(e);
+			})
+			.then(function () {
 				state.isUserSettingsUpdateBusy = false;
-
-				if (response.type === apiAdapter.responseTypes.GENERIC_SUCCESS) {
-					state.user = response.data;
-
-					return response.data;
-				}
-
-				if (response.type === apiAdapter.responseTypes.GENERIC_ERROR ||
-					response.type === apiAdapter.responseTypes.INPUT_VALIDATION_ERROR ||
-					response.type === apiAdapter.responseTypes.UNAUTHORIZED_REQUEST_ERROR) {
-					state.userUpdateSettingsErrors = response.data;
-
-					return response.data;
-				}
 			});
 	},
 
 
 	logUserOut: function () {
 		state.user = null;
-		state.isUserLoginBusy = false;
-		state.userLoginErrors = null;
-
-		return apiAdapter.operations.logUserOut();
 	}
 
 };

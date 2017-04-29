@@ -30,6 +30,9 @@ var state = {
 };
 
 
+var API_BASE_URI = '//conduit.productionready.io/api';
+
+
 function getErrorMessageFromAPIErrorObject(e) {
 	var response = null;
 
@@ -81,7 +84,7 @@ function getArticles(payload) {
 
 	return m.request({
 		method: 'GET',
-		url: '//conduit.productionready.io/api/articles' + queryString
+		url: API_BASE_URI + '/articles' + queryString
 	})
 		.then(function (response) {
 			return response.articles;
@@ -116,7 +119,7 @@ var actions = {
 
 		m.request({
 			method: 'POST',
-			url: '//conduit.productionready.io/api/users/login',
+			url: API_BASE_URI + '/users/login',
 			data: {
 				user: {
 					email: email,
@@ -142,7 +145,7 @@ var actions = {
 
 		m.request({
 			method: 'GET',
-			url: '//conduit.productionready.io/api/user',
+			url: API_BASE_URI + '/user',
 			headers: {
 				'Authorization': 'Token ' + userToken
 			}
@@ -166,7 +169,7 @@ var actions = {
 
 		m.request({
 			method: 'PUT',
-			url: '//conduit.productionready.io/api/user',
+			url: API_BASE_URI + '/user',
 			headers: {
 				'Authorization': 'Token ' + state.user.token
 			},
@@ -197,7 +200,7 @@ var actions = {
 
 		m.request({
 			method: 'GET',
-			url: '//conduit.productionready.io/api/tags',
+			url: API_BASE_URI + '/tags',
 		})
 			.then(function (response) {
 				state.tags.list = response.tags;

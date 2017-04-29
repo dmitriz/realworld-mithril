@@ -24,7 +24,7 @@
   },
   "scripts": {
     "ui-server": "./node_modules/http-server/bin/http-server public -p 3000 -s",
-    "ui-build-js-watch": "watchify src/ui/index.js --debug --verbose -o public/main.js",
+    "ui-build-js-watch": "watchify src/index.js --debug --verbose -o public/main.js",
     "dev": "npm run ui-build-js-watch & npm run ui-server",
     "start": "npm run dev",
     "test": "echo \"Error: no test specified\" && exit 1"

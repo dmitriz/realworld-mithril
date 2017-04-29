@@ -6,7 +6,7 @@ function view() {
 		m('.container',
 			[
 				m('h1.logo-font', 'conduit'),
-				m('p', 'A place to share your knowledge')
+				m('p', 'A place to share your knowledge.')
 			]
 		)
 	);

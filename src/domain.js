@@ -15,7 +15,6 @@ var m = require('mithril');
 // TODO: DELETE /api/articles/:slug/comments/:id
 // TODO: POST /api/articles/:slug/favorite
 // TODO: DELETE /api/articles/:slug/favorite
-// TODO: GET /api/tags
 
 
 var state = {

@@ -1,7 +1,7 @@
 var m = require('mithril');
 
 
-var domain = require('./../domain');
+var domain = require('./../../domain');
 var MainNav = require('./MainNav');
 var Link = require('./Link');
 

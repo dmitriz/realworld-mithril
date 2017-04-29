@@ -1,7 +1,7 @@
 var m = require('mithril');
 
 
-var domain = require('./../domain');
+var domain = require('./../../domain');
 var Link = require('./Link');
 var UserLoginForm = require('./UserLoginForm');
 var ListErrors = require('./ListErrors');

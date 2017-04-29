@@ -11,6 +11,11 @@ var state = {
 };
 
 
+function init(){
+	// Do nothing for now
+}
+
+
 function getArticlesFromAPIOrCache() {
 
 }
@@ -109,6 +114,7 @@ var actions = {
 
 
 module.exports = {
+	init: init,
 	store: state,
 	actions: actions
 };

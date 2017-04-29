@@ -1,7 +1,7 @@
 var m = require('mithril');
 
 
-var domain = require('./../domain');
+var domain = require('./../../domain');
 var UserInfoBanner = require('./UserInfoBanner');
 var UserArticlesToggle = require('./UserArticlesToggle');
 var ArticleList = require('./ArticleList');

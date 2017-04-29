@@ -1,5 +1,5 @@
 'use strict';
 
 
-var router = require('./router');
-router.init();
+require('./domain').init();
+require('./ui/router').init();

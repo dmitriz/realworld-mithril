@@ -1,6 +1,7 @@
 {
 	"env": {
-		"browser": true
+		"browser": true,
+		"node": true
 	},
 	"rules": {
 		"quotes": [
@@ -37,6 +38,14 @@
 		"complexity": [
 			2,
 			5
+		],
+		"no-unused-vars": [
+			2,
+			{
+				"vars": "all",
+				"args": "after-used",
+				"ignoreRestSiblings": false
+			}
 		]
 	}
 }

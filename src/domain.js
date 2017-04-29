@@ -20,6 +20,7 @@ var m = require('mithril');
 
 var state = {
 	articles: null,
+	articlesByTag: null,
 	tags: {},
 	userAuthorizationToken: null,
 	isUserLoginBusy: false,
@@ -45,38 +46,66 @@ function getErrorMessageFromAPIErrorObject(e) {
 }
 
 
+function getArticles(payload) {
+	/*
+	TODO
+	Filter by tag:
+
+	?tag=AngularJS
+
+	Filter by author:
+
+	?author=jake
+
+	Favorited by user:
+
+	?favorited=jake
+
+	Limit number of articles (default is 20):
+
+	?limit=20
+
+	Offset/skip number of articles (default is 0):
+
+	?offset=0
+	*/
+
+	var queryString = '?';
+
+	if (!payload) {
+		payload = {};
+	}
+
+	if (payload.tag) {
+		queryString += 'tag=' + encodeURI(payload.tag);
+	}
+
+	return m.request({
+		method: 'GET',
+		url: '//conduit.productionready.io/api/articles' + queryString
+	})
+		.then(function (response) {
+			return response.articles;
+		});
+}
+
+
+
 var actions = {
 
-	getArticles: function () {
-		/*
-		TODO
-		Filter by tag:
-
-		?tag=AngularJS
-
-		Filter by author:
-
-		?author=jake
-
-		Favorited by user:
-
-		?favorited=jake
-
-		Limit number of articles (default is 20):
-
-		?limit=20
-
-		Offset/skip number of articles (default is 0):
-
-		?offset=0
-		*/
-		m.request({
-			method: 'GET',
-			url: '//conduit.productionready.io/api/articles'
-		})
-			.then(function (response) {
-				state.articles = response.articles;
+	getAllArticles: function () {
+		return getArticles()
+			.then(function (articles) {
+				state.articles = articles;
 				// state.articles = []; // Test empty response
+			});
+	},
+
+
+	getArticlesByTag: function (tag) {
+		return getArticles({ tag: tag })
+			.then(function (articles) {
+				state.articlesByTag = articles;
 			});
 	},
 

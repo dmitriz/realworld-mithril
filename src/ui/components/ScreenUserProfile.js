@@ -8,7 +8,7 @@ var ArticleList = require('./ArticleList');
 
 
 function oninit() {
-	domain.actions.getArticles();
+	domain.actions.getAllArticles();
 }
 
 

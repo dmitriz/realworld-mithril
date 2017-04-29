@@ -8,14 +8,13 @@ var FeedToggle = require('./FeedToggle');
 var Tags = require('./Tags');
 
 
-function onTagItemClick(tag, e) {
-	e.preventDefault();
-	console.log('ScreenHome.onTagItemClick()', tag);
+function onTagItemClick(tag) {
+	domain.actions.getArticlesByTag(tag);
 }
 
 
 function oninit() {
-	domain.actions.getArticles();
+	domain.actions.getAllArticles();
 	domain.actions.getTags();
 }
 

@@ -10,7 +10,12 @@ function view(vnode) {
 	if (vnode.attrs.isLoading === false) {
 		tagsContent = m('div.tag-list',
 			vnode.attrs.list.map(function (tag) {
-				return m(Link, { className: 'tag-default tag-pill', key: tag, to: '', onclick: vnode.attrs.fn_onTagItemClick.bind(null, tag) }, tag);
+				return m(Link, {
+					className: 'tag-default tag-pill', key: tag, to: '', onclick: function (e) {
+						e.preventDefault();
+						vnode.attrs.fn_onTagItemClick(tag);
+					}
+				}, tag);
 			})
 		);
 	}

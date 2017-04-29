@@ -19,7 +19,7 @@ var m = require('mithril');
 
 var state = {
 	articles: null,
-	articlesByTag: null,
+	articlesByTag: {},
 	tags: {},
 	userAuthorizationToken: null,
 	isUserLoginBusy: false,
@@ -31,6 +31,11 @@ var state = {
 
 
 var API_BASE_URI = '//conduit.productionready.io/api';
+
+
+function init() {
+	actions.getLoggedInUser(window.localStorage.getItem('jwt'));
+}
 
 
 function getErrorMessageFromAPIErrorObject(e) {
@@ -51,9 +56,6 @@ function getErrorMessageFromAPIErrorObject(e) {
 function getArticles(payload) {
 	/*
 	TODO
-	Filter by tag:
-
-	?tag=AngularJS
 
 	Filter by author:
 
@@ -72,19 +74,11 @@ function getArticles(payload) {
 	?offset=0
 	*/
 
-	var queryString = '?';
-
-	if (!payload) {
-		payload = {};
-	}
-
-	if (payload.tag) {
-		queryString += 'tag=' + encodeURI(payload.tag);
-	}
+	var queryString = m.buildQueryString(payload);
 
 	return m.request({
 		method: 'GET',
-		url: API_BASE_URI + '/articles' + queryString
+		url: API_BASE_URI + '/articles?' + queryString
 	})
 		.then(function (response) {
 			return response.articles;
@@ -107,12 +101,14 @@ var actions = {
 	getArticlesByTag: function (tag) {
 		return getArticles({ tag: tag })
 			.then(function (articles) {
-				state.articlesByTag = articles;
+				state.articlesByTag.tag = tag;
+				state.articlesByTag.list = articles;
 			});
 	},
 
 
 	attemptUserLogin: function (email, password) {
+		window.localStorage.setItem('jwt', null);
 		state.user = null;
 		state.isUserLoginBusy = true;
 		state.userLoginErrors = null;
@@ -130,6 +126,7 @@ var actions = {
 			.then(function (response) {
 				state.userLoginErrors = null;
 				state.user = response.user;
+				window.localStorage.setItem('jwt', state.user.token);
 			})
 			.catch(function (e) {
 				state.userLoginErrors = getErrorMessageFromAPIErrorObject(e);
@@ -140,8 +137,12 @@ var actions = {
 	},
 
 
-	getLoggedInUser: function () {
+	getLoggedInUser: function (token) {
 		var userToken = state.user ? state.user.token : '';
+
+		if (token) {
+			userToken = token;
+		}
 
 		m.request({
 			method: 'GET',
@@ -191,6 +192,7 @@ var actions = {
 
 	logUserOut: function () {
 		state.user = null;
+		window.localStorage.setItem('jwt', null);
 		m.route.set('/');
 	},
 
@@ -214,6 +216,7 @@ var actions = {
 
 
 module.exports = {
+	init: init,
 	store: state,
 	actions: actions
 };

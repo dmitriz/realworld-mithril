@@ -28,19 +28,17 @@ For more information on how this works with other frontends/backends, head over 
             |                               |
  [store.prop reference]               (function call)
             |                               |
-            |      +----------------+       |
-            |      |                |       |
-            -------+     domain     <-------+
-                   |                |
-                   +---^---------+--+
-                       |         |
-                 [Promise]   (function call)
-                       |         |
-                    +--+---------V--+
-                    |               |
-                    |  api-adapter  |
-                    |               |
-                    +-------^-------+
+            |    +--------------------+     |
+            |    |                    |     |
+            -----+       domain       <-----+
+                 |                    |
+                 |    Updates its     |
+                 | internal state obj |
+                 |   in response to   |
+                 |      API data      |
+                 |                    |
+                 +----------^---------+
+                            |
                             |
                             V
                     (External API(s))

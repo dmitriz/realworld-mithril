@@ -7,15 +7,37 @@ var UserArticlesToggle = require('./UserArticlesToggle');
 var ArticleList = require('./ArticleList');
 
 
+var state = {
+	username: ''
+};
+
+
+function getUserProfile() {
+	state.username = m.route.param('username');
+	domain.actions.getUserProfile(state.username);
+	document.body.scrollTop = 0;
+}
+
+
 function oninit() {
+	getUserProfile();
 	domain.actions.getAllArticles();
+}
+
+
+function onbeforeupdate() {
+	if (state.username !== m.route.param('username')) {
+		getUserProfile();
+	}
+
+	return true;
 }
 
 
 function view() {
 	return m('.profile-page',
 		[
-			m(UserInfoBanner),
+			m(UserInfoBanner, { currentUser: domain.store.user, data: domain.store.selectedUserProfile.data, isLoading: domain.store.selectedUserProfile.isLoading }),
 			m('.container', [
 				m('.row', [
 					m('.col-md-12', [
@@ -31,5 +53,6 @@ function view() {
 
 module.exports = {
 	oninit: oninit,
+	onbeforeupdate: onbeforeupdate,
 	view: view
 };

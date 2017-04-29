@@ -1,7 +1,7 @@
 var m = require('mithril');
 
 
-// Refactor state object as the app grows
+// TODO: Refactor state object as the app grows
 // TODO: GET /api/profiles/:username
 // TODO: POST /api/profiles/:username/follow
 // TODO: DELETE /api/profiles/:username/follow
@@ -26,7 +26,11 @@ var state = {
 	userLoginErrors: null,
 	isUserSettingsUpdateBusy: false,
 	userUpdateSettingsErrors: null,
-	user: null
+	user: null,
+	selectedUserProfile: {
+		data: null,
+		isLoading: false
+	}
 };
 
 
@@ -186,6 +190,23 @@ var actions = {
 			})
 			.then(function () {
 				state.isUserSettingsUpdateBusy = false;
+			});
+	},
+
+
+	getUserProfile: function (username) {
+		state.selectedUserProfile.isLoading = true;
+		state.selectedUserProfile.data = null;
+
+		m.request({
+			method: 'GET',
+			url: API_BASE_URI + '/profiles/' + username
+		})
+			.then(function (response) {
+				state.selectedUserProfile.data = response.profile;
+			})
+			.then(function () {
+				state.selectedUserProfile.isLoading = false;
 			});
 	},
 

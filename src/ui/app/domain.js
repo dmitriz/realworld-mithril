@@ -5,6 +5,8 @@ var state = {
 	articles: null,
 	isUserLoginBusy: false,
 	userLoginErrors: null,
+	isUserSettingsUpdateBusy: false,
+	userUpdateSettingsErrors: null,
 	user: null
 };
 
@@ -17,7 +19,7 @@ function getArticlesFromAPIOrCache() {
 var actions = {
 
 	getArticles: function () {
-		return apiAdapter.getArticles()
+		return apiAdapter.operations.getArticles()
 			.then(function (response) {
 				if (response.type === apiAdapter.responseTypes.GENERIC_SUCCESS) {
 					state.articles = response.data.articles;
@@ -35,7 +37,7 @@ var actions = {
 		state.isUserLoginBusy = true;
 		state.userLoginErrors = null;
 
-		return apiAdapter.userLogin(email, password)
+		return apiAdapter.operations.userLogin(email, password)
 			.then(function (response) {
 				state.isUserLoginBusy = false;
 
@@ -46,8 +48,9 @@ var actions = {
 					return response.data;
 				}
 
-				if (response.type === apiAdapter.responseTypes.LOGIN_ERROR) {
+				if (response.type === apiAdapter.responseTypes.INPUT_VALIDATION_ERROR) {
 					state.userLoginErrors = response.data;
+
 					return response.data;
 				}
 
@@ -56,9 +59,40 @@ var actions = {
 
 
 	getLoggedInUser: function () {
-		return apiAdapter.getLoggedInUser()
+		return apiAdapter.operations.getLoggedInUser()
 			.then(function (response) {
 				console.log('domain.getLoggedInUser()', response.type, response.data);
+			});
+	},
+
+
+	updateUserSettings: function (payload) {
+		state.isUserSettingsUpdateBusy = true;
+		state.userUpdateSettingsErrors = null;
+
+		if (!payload.password) {
+			delete payload.password;
+		}
+
+		return apiAdapter.operations.updateUserSettings(payload)
+			.then(function (response) {
+				console.log('domain.updateUserSettings()', response.type, response.data);
+
+				state.isUserSettingsUpdateBusy = false;
+
+				if (response.type === apiAdapter.responseTypes.GENERIC_SUCCESS) {
+					state.user = response.data;
+
+					return response.data;
+				}
+
+				if (response.type === apiAdapter.responseTypes.GENERIC_ERROR ||
+					response.type === apiAdapter.responseTypes.INPUT_VALIDATION_ERROR ||
+					response.type === apiAdapter.responseTypes.UNAUTHORIZED_REQUEST_ERROR) {
+					state.userUpdateSettingsErrors = response.data;
+
+					return response.data;
+				}
 			});
 	},
 
@@ -68,9 +102,7 @@ var actions = {
 		state.isUserLoginBusy = false;
 		state.userLoginErrors = null;
 
-		apiAdapter.clearUserAuthToken();
-
-		return Promise();
+		return apiAdapter.operations.logUserOut();
 	}
 
 };

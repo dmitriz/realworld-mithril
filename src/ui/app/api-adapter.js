@@ -4,37 +4,79 @@ var m = require('mithril');
 var responseTypes = {
 	GENERIC_SUCCESS: 'GENERIC_SUCCESS',
 	GENERIC_ERROR: 'GENERIC_ERROR',
-	LOGIN_ERROR: 'LOGIN_ERROR'
+	UNAUTHORIZED_REQUEST_ERROR: 'UNAUTHORIZED_REQUEST_ERROR',
+	INPUT_VALIDATION_ERROR: 'INPUT_VALIDATION_ERROR'
 };
 
 
-var authToken = null;
+var userAuthorizationToken = null;
 
 
-function getAuthRequestHeaders() {
-	if (!authToken) {
-		return null;
-	}
-
+function getDefaultRequestHeaders() {
 	return {
-		'Authorization': 'Token ' + authToken
+		Accept: 'application/json',
+		'Content-Type': 'application/json; charset=utf-8'
 	};
 }
 
 
+function getAuthorizationRequestHeaders() {
+	if (!userAuthorizationToken) {
+		return null;
+	}
+
+	return {
+		'Authorization': 'Token ' + userAuthorizationToken
+	};
+}
+
+
+function parseXHRResponseTextAsJSON(responseText) {
+	if (typeof responseText === 'object') {
+		return responseText;
+	}
+
+	return JSON.parse(responseText);
+}
+
+
+function handle401Response(xhr) {
+	return { message: '{"errors": {"Unauthorized Request": []}}' };
+}
+
+
+function extractXHRResponse(xhr, options) {
+	if (xhr.status === 401) {
+		return handle401Response();
+	}
+
+	return parseXHRResponseTextAsJSON(xhr.responseText);
+}
+
+
 function getErrorMessageFromErrorObject(e) {
-	return JSON.parse(e.message).errors;
+	var response = null;
+
+	try {
+		response = JSON.parse(e.message).errors;
+	} catch (error) {
+		response = {
+			'An unknown error occurred': []
+		};
+	}
+
+	return response;
 }
 
 
-function setUserAuthToken(token) {
-	authToken = token;
-	return authToken;
+function setUserAuthorizationToken(token) {
+	userAuthorizationToken = token;
+	return userAuthorizationToken;
 }
 
 
-function clearUserAuthToken() {
-	return setUserAuthToken(null);
+function clearUserAuthorizationToken() {
+	return setUserAuthorizationToken(null);
 }
 
 
@@ -53,7 +95,7 @@ function getArticles() {
 
 
 function userLogin(email, password) {
-	setUserAuthToken(null);
+	setUserAuthorizationToken(null);
 
 	return m.request({
 		method: 'POST',
@@ -66,7 +108,7 @@ function userLogin(email, password) {
 		}
 	})
 		.then(function (response) {
-			setUserAuthToken(response.user.token);
+			setUserAuthorizationToken(response.user.token);
 
 			return {
 				type: responseTypes.GENERIC_SUCCESS,
@@ -75,7 +117,7 @@ function userLogin(email, password) {
 		})
 		.catch(function (e) {
 			return {
-				type: responseTypes.LOGIN_ERROR,
+				type: responseTypes.INPUT_VALIDATION_ERROR,
 				data: getErrorMessageFromErrorObject(e)
 			};
 		});
@@ -83,16 +125,15 @@ function userLogin(email, password) {
 
 
 function userLogout() {
-	setUserAuthToken(null);
+	setUserAuthorizationToken(null);
 }
 
 
 function getLoggedInUser() {
-	console.info('api-adapter.getLoggedInUser()');
 	return m.request({
 		method: 'GET',
 		url: '//conduit.productionready.io/api/user',
-		headers: Object.assign({}, getAuthRequestHeaders())
+		headers: Object.assign(getDefaultRequestHeaders(), getAuthorizationRequestHeaders())
 	})
 		.then(function (response) {
 			return {
@@ -109,10 +150,44 @@ function getLoggedInUser() {
 }
 
 
+function updateUserSettings(payload) {
+	return m.request({
+		method: 'PUT',
+		url: '//conduit.productionready.io/api/user',
+		headers: Object.assign(getDefaultRequestHeaders(), getAuthorizationRequestHeaders()),
+		data: {
+			user: payload
+		},
+		extract: extractXHRResponse
+	})
+		.then(function (response) {
+			return {
+				type: responseTypes.GENERIC_SUCCESS,
+				data: response.user
+			};
+		})
+		.catch(function (e) {
+			var error = getErrorMessageFromErrorObject(e);
+			var response = {
+				type: responseTypes.GENERIC_ERROR,
+				data: error
+			};
+
+			if (error['Unauthorized Request']) {
+				response.type = responseTypes.UNAUTHORIZED_REQUEST_ERROR;
+			}
+
+			return response;
+		});
+}
+
+
 module.exports = {
 	responseTypes: responseTypes,
-	clearUserAuthToken: clearUserAuthToken,
-	userLogin: userLogin,
-	getLoggedInUser: getLoggedInUser,
-	getArticles: getArticles
+	operations: {
+		userLogin: userLogin,
+		getLoggedInUser: getLoggedInUser,
+		updateUserSettings: updateUserSettings,
+		getArticles: getArticles
+	}
 };

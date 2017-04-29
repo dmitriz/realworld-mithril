@@ -28,19 +28,22 @@ function onLogoutButtonClick(e) {
 
 
 function oninit(vnode) {
-	var currentUser = vnode.attrs.currentUser;
+	var currentUser = vnode.attrs.currentUser ? vnode.attrs.currentUser : {
+		bio: '',
+		email: '',
+		image: '',
+		username: ''
+	};
+
+	state.formData = {
+		bio: currentUser.bio,
+		email: currentUser.email,
+		image: currentUser.image,
+		username: currentUser.username
+	};
 
 	state.fn_updateUserSettings = vnode.attrs.fn_updateUserSettings;
 	state.fn_logUserOut = vnode.attrs.fn_logUserOut;
-
-	if (currentUser) {
-		state.formData = {
-			bio: currentUser.bio,
-			email: currentUser.email,
-			image: currentUser.image,
-			username: currentUser.username
-		};
-	}
 }
 
 

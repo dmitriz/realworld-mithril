@@ -130,6 +130,7 @@ var actions = {
 
 	logUserOut: function () {
 		state.user = null;
+		m.route.set('/');
 	}
 
 };

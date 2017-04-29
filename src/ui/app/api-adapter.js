@@ -14,7 +14,7 @@ var userAuthorizationToken = null;
 
 function getDefaultRequestHeaders() {
 	return {
-		Accept: 'application/json',
+		'Accept': 'application/json',
 		'Content-Type': 'application/json; charset=utf-8'
 	};
 }
@@ -61,7 +61,7 @@ function getErrorMessageFromErrorObject(e) {
 		response = JSON.parse(e.message).errors;
 	} catch (error) {
 		response = {
-			'An unknown error occurred': []
+			'An unhandled error occurred': []
 		};
 	}
 
@@ -133,7 +133,8 @@ function getLoggedInUser() {
 	return m.request({
 		method: 'GET',
 		url: '//conduit.productionready.io/api/user',
-		headers: Object.assign(getDefaultRequestHeaders(), getAuthorizationRequestHeaders())
+		headers: Object.assign(getDefaultRequestHeaders(), getAuthorizationRequestHeaders()),
+		extract: extractXHRResponse
 	})
 		.then(function (response) {
 			return {

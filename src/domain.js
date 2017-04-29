@@ -2,7 +2,6 @@ var m = require('mithril');
 
 
 // TODO: Refactor state object as the app grows
-// TODO: GET /api/profiles/:username
 // TODO: POST /api/profiles/:username/follow
 // TODO: DELETE /api/profiles/:username/follow
 // TODO: GET /api/articles/feed
